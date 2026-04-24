@@ -28,8 +28,13 @@ posthog.init('phc_yHkuEJgTR8SpqPtM7cTUqZAMMPA2pLMbwrjX2VAtMzkL', {
     loaded: function(ph) {
         // BUG 2: identify() called on every page load — should only fire
         // after a real login/signup event, not on every anonymous page view
-        ph.identify('user_quill_shopper_8842', {
-            email: 'hog.fan@example.com',
+        var userId = localStorage.getItem('qc_user_id');
+        if (!userId) {
+            userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('qc_user_id', userId);
+        }
+        ph.identify(userId, {
+            email: userId + '@example.com',
             name: 'Demo Shopper',
             plan: 'free',
             signup_source: 'organic',
