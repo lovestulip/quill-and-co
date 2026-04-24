@@ -6,25 +6,14 @@ Run this after every demo to get the store back to broken for the next customer.
 
 ## Step 1 — Reset the code
 
-In GitHub Desktop:
-
-1. Make sure all changes from the demo are committed to `main` (GitHub Desktop will show them — commit with any message)
-2. Switch to the `buggy` branch
-3. Switch back to `main`
-4. Go to **Branch → Merge into current branch** → select `buggy` → **No! Don't do this**
-
-Actually, do it this way instead:
-
 1. Open Terminal and run:
    ```bash
    git checkout buggy -- .
    ```
-   This overwrites all your local files with the broken versions from the `buggy` branch.
-2. In GitHub Desktop you'll see all the files marked as changed — commit them with a message like "Reset to buggy state"
-3. Push to `main`
-4. GitHub Pages redeploys automatically in ~60 seconds — the live site is broken again
-
-**Important:** never merge `buggy` into `main` via a PR — that's what deleted it last time. Always use `git checkout buggy -- .` instead.
+2. Open GitHub Desktop — you'll see all the files marked as changed
+3. Commit them with any message (e.g. "Reset to buggy state")
+4. Hit **Push origin**
+5. GitHub Pages redeploys in ~60 seconds — store is broken again
 
 ---
 
