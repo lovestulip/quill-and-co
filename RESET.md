@@ -36,18 +36,15 @@ Paste this prompt into Claude (with PostHog MCP connected) to undo any settings 
 I need to restore the Quill & Co PostHog demo project to its intentionally broken state.
 Please check the following and undo anything that was fixed:
 
-1. Billing limits — no billing limits should be set on any product (Events, Recordings, etc).
-   If any limits exist, remove them.
+1. Actions — no Actions should exist. If any were created during the demo, delete them.
 
-2. Actions — no Actions should exist. If any were created during the demo, delete them.
-
-3. Session recording minimum duration — no minimum duration should be set.
+2. Session recording minimum duration — no minimum duration should be set.
    If one exists, remove it.
 
-4. Feature flag 'summer-discount' — this flag should be disabled (or not exist at all).
+3. Feature flag 'summer-discount' — this flag should be disabled (or not exist at all).
    If it's enabled, disable it.
 
-5. Web Vitals — confirm web vitals are still being collected (this should stay ON — it's Bug 9).
+4. Web Vitals — confirm web vitals are still being collected (this should stay ON — it's Bug 9).
 
 Report what you found and what you changed.
 ```
