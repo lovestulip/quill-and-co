@@ -31,7 +31,7 @@ It exists as a demo prop. A customer watches Claude diagnose 10 real instrumenta
 
 1. Browse the live store to generate PostHog events
 2. Open Claude with PostHog MCP connected
-3. Run the 6 diagnostic prompts — Claude reads the PostHog data and explains each problem it finds
+3. Run the 6 diagnostic prompts — Claude reads the PostHog data, explains each problem, and fixes them (code edits + PostHog settings via MCP)
 4. Customer thinks "I want that on my project"
 5. Show the 2-minute MCP install
 6. Reset for the next customer (see `RESET.md`)
@@ -43,7 +43,16 @@ It exists as a demo prop. A customer watches Claude diagnose 10 real instrumenta
 3. **Session replay audit** — sampling rate, minimum duration, controls in place
 4. **Feature flag efficiency** — local vs remote eval ratio, `/decide` calls per session
 5. **Implementation error check** — `identify` calls per session, `group` calls per session, `order_completed` double-fire, web vitals usage
-6. **Summary + priority fixes** — ranked list of all 10 problems with estimated impact and doc links
+6. **Summary + priority fixes** — ranked list of all 10 problems with estimated impact and doc links for each
+
+## Branches
+
+| Branch | Purpose |
+|---|---|
+| `main` | What GitHub Pages serves — starts broken, gets fixed during demo, reset after |
+| `buggy` | Permanent broken reference — never touch this, it's the restore point |
+
+To reset `main` back to broken after a demo: see `RESET.md`.
 
 ## PostHog project
 
