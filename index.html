@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quill & Co — Life's Better With Quills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="announce-bar">Free shipping on orders over $75 &nbsp;·&nbsp; Hedgehog-approved since 2019 🦔</div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Quill & Co</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="products.html">Collections</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav-cart" title="Cart">
+      🛒
+      <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">New Summer Collection</p>
+      <span class="hero-hedgehog">🦔</span>
+      <h1>Life's Better<br><em>With Quills</em></h1>
+      <p>Premium coastal lifestyle goods for the discerning hedgehog enthusiast. Linen. Leather. Pineapple pizza.</p>
+      <a href="products.html" class="btn btn-white">Shop the Collection</a>
+      <a href="#featured" class="btn btn-ghost">See What's New</a>
+    </div>
+  </section>
+
+  <!-- Featured products -->
+  <section class="section" id="featured">
+    <div class="container">
+      <div class="section-header">
+        <h2>Summer Favourites</h2>
+        <p>The pieces everyone's talking about this season</p>
+      </div>
+      <div class="product-grid-3" id="featured-grid"></div>
+      <div style="text-align:center; margin-top: 2.5rem;">
+        <a href="products.html" class="btn btn-outline">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Value props -->
+  <section class="section">
+    <div class="container">
+      <div class="value-props">
+        <div class="value-prop">
+          <div class="icon">🌿</div>
+          <h3>Hedgehog-First Design</h3>
+          <p>Every product is designed by hedgehog enthusiasts, for hedgehog enthusiasts. No compromises.</p>
+        </div>
+        <div class="value-prop">
+          <div class="icon">🌊</div>
+          <h3>Sustainably Sourced</h3>
+          <p>We source responsibly, because hedgehogs need a healthy planet to roam around on.</p>
+        </div>
+        <div class="value-prop">
+          <div class="icon">📦</div>
+          <h3>Free Returns</h3>
+          <p>Not feeling it? Return within 30 days, no questions asked. Well, maybe one question.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pizza print callout -->
+  <section style="background: linear-gradient(135deg, #FDE8A0 0%, #F8C860 100%); padding: 4rem 2rem; text-align: center;">
+    <div class="container">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">🦔🍕🍍</div>
+      <h2 style="font-size: 2rem; margin-bottom: 0.75rem;">The Print Everyone's Fighting Over</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 440px; margin-left: auto; margin-right: auto;">
+        Spike enjoying a pineapple pizza with zero regrets. Archival print, unframed, absolutely unhinged. $45.
+      </p>
+      <a href="product.html?id=5" class="btn btn-primary">Get Spike's Hawaiian</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Quill & Co 🦔</span>
+        <p>Premium hedgehog-lifestyle goods for the coastal enthusiast. Est. 2019, somewhere near the water.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="products.html">Apparel</a></li>
+          <li><a href="products.html">Accessories</a></li>
+          <li><a href="products.html">Art Prints</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Quill & Co. All rights reserved. Hedgehogs not included.</span>
+      <a class="reset-link" onclick="resetDemo()">Reset demo</a>
+    </div>
+  </footer>
+
+  <script src="posthog-init.js"></script>
+  <script src="products.js"></script>
+  <script>
+    const FEATURED_IDS = [1, 5, 6];
+    const grid = document.getElementById('featured-grid');
+    const featured = PRODUCTS.filter(p => FEATURED_IDS.includes(p.id));
+
+    featured.forEach(function(p) {
+      const card = document.createElement('a');
+      card.href = 'product.html?id=' + p.id;
+      card.className = 'product-card';
+      card.dataset.productId = p.id;
+      card.dataset.productName = p.name;
+      card.dataset.category = p.category;
+      card.dataset.price = p.price;
+
+      card.innerHTML =
+        '<div class="product-img"><img src="' + p.image + '" alt="' + p.name + '"></div>' +
+        '<div class="product-info">' +
+          (p.badge ? '<span class="product-badge">' + p.badge + '</span><br>' : '') +
+          '<div class="product-name">' + p.name + '</div>' +
+          '<div class="product-subtitle">' + p.subtitle + '</div>' +
+          '<div class="product-price">$' + p.price + '</div>' +
+        '</div>';
+
+      grid.appendChild(card);
+    });
+
+    var cartCount = 0;
+  </script>
+</body>
+</html>

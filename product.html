@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — Quill & Co</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .related-section {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      padding: 3.5rem 0;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BUG 5: feature flag discount banner (populated by the polling loop below) -->
+  <div id="discount-banner">🌺 Use code HOGLIFE for 15% off — today only!</div>
+
+  <div class="announce-bar">Free shipping on orders over $75 &nbsp;·&nbsp; Hedgehog-approved since 2019 🦔</div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Quill & Co</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="products.html">Collections</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav-cart" title="Cart">
+      🛒
+      <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <a href="products.html">Shop</a>
+    <span>›</span>
+    <span id="breadcrumb-name">Product</span>
+  </div>
+
+  <div class="product-detail-wrap" id="product-detail">
+    <!-- Populated by JS -->
+  </div>
+
+  <div class="related-section">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:2rem;">
+        <h2>You Might Also Like</h2>
+      </div>
+      <div class="related-grid" id="related-grid"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Quill & Co 🦔</span>
+        <p>Premium hedgehog-lifestyle goods for the coastal enthusiast. Est. 2019, somewhere near the water.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="products.html">Apparel</a></li>
+          <li><a href="products.html">Accessories</a></li>
+          <li><a href="products.html">Art Prints</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Quill & Co. All rights reserved. Hedgehogs not included.</span>
+      <a class="reset-link" onclick="resetDemo()">Reset demo</a>
+    </div>
+  </footer>
+
+  <script src="posthog-init.js"></script>
+  <script src="products.js"></script>
+  <script>
+    var cartCount = 0;
+    var selectedSize = null;
+
+    // Read product ID from URL
+    var params = new URLSearchParams(window.location.search);
+    var productId = parseInt(params.get('id'), 10) || 1;
+    var product = PRODUCTS.find(function(p) { return p.id === productId; }) || PRODUCTS[0];
+
+    // Set page title and breadcrumb
+    document.title = product.name + ' — Quill & Co';
+    document.getElementById('breadcrumb-name').textContent = product.name;
+
+    // Render product detail
+    var detail = document.getElementById('product-detail');
+    var sizesHtml = '';
+    if (product.sizes) {
+      sizesHtml =
+        '<label class="size-label">Select Size</label>' +
+        '<div class="size-options" id="size-options">' +
+        product.sizes.map(function(s) {
+          return '<button class="size-btn" onclick="selectSize(this, \'' + s + '\')">' + s + '</button>';
+        }).join('') +
+        '</div>';
+    }
+
+    detail.innerHTML =
+      '<div class="product-detail-img"><img src="' + product.image + '" alt="' + product.name + '"></div>' +
+      '<div class="product-detail-info">' +
+        '<p class="detail-eyebrow">' + product.category + '</p>' +
+        '<h1 class="detail-title">' + product.name + '</h1>' +
+        '<p class="detail-subtitle">' + product.subtitle + '</p>' +
+        '<div class="detail-price">$' + product.price + '</div>' +
+        '<p class="detail-description">' + product.description + '</p>' +
+        sizesHtml +
+        '<a id="add-to-cart" href="checkout.html?id=' + product.id + '" class="btn btn-primary btn-full add-to-cart-btn">Add to Cart</a>' +
+        '<button class="btn btn-outline btn-full wishlist-btn" onclick="posthog.capture(\'product_wishlisted\', { product_id: ' + product.id + ', product_name: \'' + product.name + '\' })">♡ Save to Wishlist</button>' +
+        '<div class="detail-meta">' +
+          '<p>✓ In stock — ships in 2–4 business days</p>' +
+          '<p>✓ Free returns within 30 days</p>' +
+          '<p>✓ Hedgehog-tested, hedgehog-approved</p>' +
+        '</div>' +
+      '</div>';
+
+    function selectSize(btn, size) {
+      document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedSize = size;
+    }
+
+    // Render related products (3 random, excluding current)
+    var related = PRODUCTS.filter(function(p) { return p.id !== product.id; }).slice(0, 3);
+    var relatedGrid = document.getElementById('related-grid');
+    related.forEach(function(p) {
+      var card = document.createElement('a');
+      card.href = 'product.html?id=' + p.id;
+      card.className = 'product-card';
+      card.innerHTML =
+        '<div class="product-img" style="height:180px"><img src="' + p.image + '" alt="' + p.name + '"></div>' +
+        '<div class="product-info">' +
+          '<div class="product-name">' + p.name + '</div>' +
+          '<div class="product-subtitle">' + p.subtitle + '</div>' +
+          '<div class="product-price">$' + p.price + '</div>' +
+        '</div>';
+      relatedGrid.appendChild(card);
+    });
+
+    // Track product view
+    posthog.capture('product_viewed', {
+      product_id: product.id,
+      product_name: product.name,
+      product_price: product.price,
+      product_category: product.category,
+    });
+
+    // BUG 5: feature flag checked via remote eval in a loop —
+    // reloadFeatureFlags() makes a network call to PostHog on every tick.
+    // At 3-second intervals this is ~1,200 /decide calls per hour per user.
+    // The fix is posthog.onFeatureFlags() once, then isFeatureEnabled() from local cache.
+    setInterval(function() {
+      posthog.reloadFeatureFlags(function() {
+        var enabled = posthog.isFeatureEnabled('summer-discount');
+        document.getElementById('discount-banner').style.display = enabled ? 'block' : 'none';
+      });
+    }, 3000);
+
+    // BUG 8: manually fires $pageleave on every click —
+    // PostHog already sends this automatically on navigation
+    document.addEventListener('click', function() {
+      posthog.capture('$pageleave');
+    });
+  </script>
+</body>
+</html>

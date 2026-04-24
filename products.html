@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop All — Quill & Co</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .filter-bar {
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      overflow-x: auto;
+    }
+    .filter-btn {
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--olive);
+      border-color: var(--olive);
+      color: white;
+    }
+    .shop-grid {
+      padding: 2.5rem 0 4rem;
+    }
+    .product-count {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announce-bar">Free shipping on orders over $75 &nbsp;·&nbsp; Hedgehog-approved since 2019 🦔</div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Quill & Co</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="products.html">Collections</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav-cart" title="Cart">
+      🛒
+      <span class="cart-badge" id="cart-count" style="display:none;">0</span>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>Shop All</h1>
+    <p>Everything hedgehog. Everything coastal. Everything right.</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="Apparel">Apparel</button>
+    <button class="filter-btn" data-filter="Accessories">Accessories</button>
+    <button class="filter-btn" data-filter="Footwear">Footwear</button>
+    <button class="filter-btn" data-filter="Art">Art Prints</button>
+  </div>
+
+  <section class="shop-grid">
+    <div class="container">
+      <p class="product-count" id="product-count">Showing 6 products</p>
+      <div class="product-grid" id="product-grid"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Quill & Co 🦔</span>
+        <p>Premium hedgehog-lifestyle goods for the coastal enthusiast. Est. 2019, somewhere near the water.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="products.html">Apparel</a></li>
+          <li><a href="products.html">Accessories</a></li>
+          <li><a href="products.html">Art Prints</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Quill & Co. All rights reserved. Hedgehogs not included.</span>
+      <a class="reset-link" onclick="resetDemo()">Reset demo</a>
+    </div>
+  </footer>
+
+  <script src="posthog-init.js"></script>
+  <script src="products.js"></script>
+  <script>
+    var cartCount = 0;
+    var currentFilter = 'all';
+
+    function renderProducts(filter) {
+      var grid = document.getElementById('product-grid');
+      var countEl = document.getElementById('product-count');
+      var visible = filter === 'all' ? PRODUCTS : PRODUCTS.filter(function(p) { return p.category === filter; });
+
+      countEl.textContent = 'Showing ' + visible.length + ' product' + (visible.length !== 1 ? 's' : '');
+      grid.innerHTML = '';
+
+      visible.forEach(function(p) {
+        var card = document.createElement('a');
+        card.href = 'product.html?id=' + p.id;
+        card.className = 'product-card';
+        card.dataset.productId = p.id;
+        card.dataset.productName = p.name;
+        card.dataset.category = p.category;
+        card.dataset.price = p.price;
+
+        card.innerHTML =
+          '<div class="product-img"><img src="' + p.image + '" alt="' + p.name + '"></div>' +
+          '<div class="product-info">' +
+            (p.badge ? '<span class="product-badge">' + p.badge + '</span><br>' : '') +
+            '<div class="product-name">' + p.name + '</div>' +
+            '<div class="product-subtitle">' + p.subtitle + '</div>' +
+            '<div class="product-price">$' + p.price + '</div>' +
+          '</div>';
+
+        // BUG 3: fires $set on every product card click with redundant person properties —
+        // this updates the person record on every browse interaction, creating noisy
+        // write volume and polluting person profiles with ephemeral browsing state
+        card.addEventListener('click', function(e) {
+          posthog.capture('product_clicked', {
+            product_id: p.id,
+            product_name: p.name,
+            product_price: p.price,
+            $set: {
+              last_product_viewed: p.name,
+              last_category_browsed: p.category,
+              last_price_seen: p.price,
+              shopper_status: 'active',
+              preferred_category: p.category,
+              last_browsed_at: new Date().toISOString(),
+            },
+          });
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderProducts(currentFilter);
+      });
+    });
+
+    renderProducts('all');
+
+    // BUG 8: manually fires $pageleave on every click — PostHog already sends
+    // $pageleave automatically on navigation, so this doubles the event count
+    // and creates a synthetic spike in pageleave volume on the listing page
+    document.addEventListener('click', function() {
+      posthog.capture('$pageleave');
+    });
+  </script>
+</body>
+</html>
