@@ -21,11 +21,10 @@ It exists as a demo prop. A customer watches Claude diagnose 10 real instrumenta
 | 3 | `$set` firing on every product click with redundant properties | `products.html` |
 | 4 | Autocapture enabled with zero Actions created — high volume, no analytical value | `posthog-init.js` + PostHog UI |
 | 5 | Feature flag checked via remote eval in a loop — should use local evaluation | `product.html` |
-| 6 | No billing limits set on any product | PostHog UI |
-| 7 | `order_completed` firing on page load AND on actual checkout — double-fire bug | `checkout.html` |
-| 8 | `$pageleave` fired manually on every click in addition to the automatic one | all pages |
-| 9 | Session replay at 100% sampling with no minimum duration — recording every session including 1-second bounces | `posthog-init.js` |
-| 10 | `groupidentify` firing on every page load | `posthog-init.js` |
+| 6 | `order_completed` firing on page load AND on actual checkout — double-fire bug | `checkout.html` |
+| 7 | `$pageleave` fired manually on every click in addition to the automatic one | all pages |
+| 8 | Session replay at 100% sampling with no minimum duration — recording every session including 1-second bounces | `posthog-init.js` |
+| 9 | `groupidentify` firing on every page load | `posthog-init.js` |
 
 ## The demo flow
 
