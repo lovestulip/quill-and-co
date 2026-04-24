@@ -1,57 +1,67 @@
 # Demo Reset Guide
 
-## After each demo — two steps
-
-### Step 1: Reset the browser session
-Hit **Reset demo** in the footer of the live site. This clears PostHog cookies so the next visitor starts as a fresh anonymous user.
-
-### Step 2: Check if any PostHog settings were changed
-If anything was changed in the PostHog UI during the demo (billing limits set, Actions created, session recording minimum duration added), run this prompt in Claude to restore the broken state:
+Run this after every demo to get the store back to broken for the next customer.
 
 ---
 
-## Re-break prompt
+## Step 1 — Reset the code
 
-Paste this into Claude after a demo to restore the Quill & Co PostHog project to its broken state:
+In GitHub Desktop:
+
+1. Make sure all changes from the demo are committed to `main` (GitHub Desktop will show them — commit with any message)
+2. Switch to the `buggy` branch
+3. Switch back to `main`
+4. Go to **Branch → Merge into current branch** → select `buggy` → **No! Don't do this**
+
+Actually, do it this way instead:
+
+1. Open Terminal and run:
+   ```bash
+   git checkout buggy -- .
+   ```
+   This overwrites all your local files with the broken versions from the `buggy` branch.
+2. In GitHub Desktop you'll see all the files marked as changed — commit them with a message like "Reset to buggy state"
+3. Push to `main`
+4. GitHub Pages redeploys automatically in ~60 seconds — the live site is broken again
+
+**Important:** never merge `buggy` into `main` via a PR — that's what deleted it last time. Always use `git checkout buggy -- .` instead.
+
+---
+
+## Step 2 — Reset PostHog settings
+
+Paste this prompt into Claude (with PostHog MCP connected) to undo any settings Claude fixed during the demo:
 
 ```
 I need to restore the Quill & Co PostHog demo project to its intentionally broken state.
 Please check the following and undo anything that was fixed:
 
-1. Billing limits — confirm no billing limits are set on any product (Events, Recordings, etc). 
+1. Billing limits — no billing limits should be set on any product (Events, Recordings, etc).
    If any limits exist, remove them.
 
-2. Actions — confirm no Actions have been created. If any exist, list them so I can delete them manually.
+2. Actions — no Actions should exist. If any were created during the demo, delete them.
 
-3. Session recording minimum duration — confirm there is no minimum session duration filter set. 
+3. Session recording minimum duration — no minimum duration should be set.
    If one exists, remove it.
 
-4. Feature flag 'summer-discount' — confirm this flag exists but is disabled (or doesn't exist). 
-   The product page polls for it in a loop as Bug 5 — it should not be enabled during the demo 
-   or the discount banner will show.
+4. Feature flag 'summer-discount' — this flag should be disabled (or not exist at all).
+   If it's enabled, disable it.
 
-5. Web Vitals — confirm web vitals are still being collected (this should be on, as it's Bug 9).
+5. Web Vitals — confirm web vitals are still being collected (this should stay ON — it's Bug 9).
 
-Report what you find and what you changed.
+Report what you found and what you changed.
 ```
 
 ---
 
-## Resetting the code
+## Step 3 — Reset the browser session
 
-If any code files were edited during a demo, restore the buggy versions with:
-
-```bash
-git checkout buggy -- .
-git push origin main
-```
-
-Then push via GitHub Desktop. GitHub Pages will redeploy automatically (~60 seconds).
+Hit **Reset demo** in the footer of the live site. This clears the PostHog session so the next customer starts as a fresh anonymous visitor.
 
 ---
 
 ## What never needs resetting
 
-- The 10 bugs in the code — they're always there
 - PostHog event data — accumulated events make the demo look more realistic, not less
+- The `buggy` branch — never touch it, it's your permanent restore point
 - The live site URL — always https://lovestulip.github.io/quill-and-co
