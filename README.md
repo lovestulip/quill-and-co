@@ -14,26 +14,27 @@ It exists as a demo prop. A customer watches Claude diagnose 10 real instrumenta
 
 ## The 10 bugs baked in
 
-| # | Bug | File |
+| # | Bug | Where |
 |---|---|---|
-| 1 | `person_profiles: 'always'` — bills every anonymous visitor at identified rate | `posthog-init.js` |
+| 1 | `person_profiles: 'always'` — every anonymous browse session bills at identified rate (4x more expensive) | `posthog-init.js` |
 | 2 | `identify()` called on every page load, not just at login | `posthog-init.js` |
-| 3 | `$set` fires on every product click with redundant person properties | `products.html` |
-| 4 | Session recording at 100% sample rate with no minimum duration | `posthog-init.js` |
-| 5 | Feature flag checked via `reloadFeatureFlags()` in a 3-second loop instead of local eval | `product.html` |
-| 6 | No billing limits set (PostHog UI setting — not in code) | PostHog UI |
-| 7 | `order_completed` fires on page load AND on button click — double-counts every order | `checkout.html` |
-| 8 | `$pageleave` fired manually on every click — PostHog already fires it automatically | all pages |
-| 9 | Web Vitals enabled but no alerts or insights configured — easy one-click fix | `posthog-init.js` |
-| 10 | `group()` called on every page load, not just at login | `posthog-init.js` |
+| 3 | `$set` firing on every product click with redundant properties | `products.html` |
+| 4 | Autocapture enabled with zero Actions created — high volume, no analytical value | `posthog-init.js` + PostHog UI |
+| 5 | Feature flag checked via remote eval in a loop — should use local evaluation | `product.html` |
+| 6 | No billing limits set on any product | PostHog UI |
+| 7 | `order_completed` firing on page load AND on actual checkout — double-fire bug | `checkout.html` |
+| 8 | `$pageleave` fired manually on every click in addition to the automatic one | all pages |
+| 9 | Session replay at 100% sampling with no minimum duration — recording every session including 1-second bounces | `posthog-init.js` |
+| 10 | `groupidentify` firing on every page load | `posthog-init.js` |
 
 ## The demo flow
 
-1. Browse the live store to generate some PostHog events
+1. Browse the live store to generate PostHog events
 2. Open Claude with PostHog MCP connected
-3. Run the 6 diagnostic prompts (see below)
-4. Claude finds and explains each problem with fix recommendations
-5. Hit **Reset demo** in the footer to start fresh for the next customer
+3. Run the 6 diagnostic prompts — Claude reads the PostHog data and explains each problem it finds
+4. Customer thinks "I want that on my project"
+5. Show the 2-minute MCP install
+6. Reset for the next customer (see `RESET.md`)
 
 ## Diagnostic prompt sequence
 
