@@ -33,11 +33,7 @@ posthog.init('phc_yHkuEJgTR8SpqPtM7cTUqZAMMPA2pLMbwrjX2VAtMzkL', {
             userId = 'user_' + Math.random().toString(36).substr(2, 9);
             localStorage.setItem('qc_user_id', userId);
         }
-        ph.identify(userId, {
-            name: 'Demo Shopper',
-            plan: 'free',
-            signup_source: 'organic',
-        });
+        ph.identify(userId);
 
         // BUG 10: group() called on every page load, not just on login —
         // mirrors the real SamCart bug where groupidentify ran on every request
