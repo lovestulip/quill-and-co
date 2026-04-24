@@ -10,7 +10,7 @@ A deliberately badly-instrumented demo store used to show how the [PostHog MCP](
 
 Quill & Co is a fake hedgehog-themed coastal lifestyle brand (linen shirts, beach totes, pineapple pizza art prints). It's not a real store — there's no real checkout, no payments, no backend.
 
-It exists as a demo prop. A customer watches Claude diagnose 10 real instrumentation bugs in this PostHog project using MCP, sees the fix recommendations and doc links, and (ideally) decides they want MCP on their own project.
+It exists as a demo prop. A customer watches Claude diagnose 9 real instrumentation bugs in this PostHog project using MCP, sees the fix recommendations and doc links, and (ideally) decides they want MCP on their own project.
 
 ## The 9 bugs baked in
 
