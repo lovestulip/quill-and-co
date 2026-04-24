@@ -34,7 +34,6 @@ posthog.init('phc_yHkuEJgTR8SpqPtM7cTUqZAMMPA2pLMbwrjX2VAtMzkL', {
             localStorage.setItem('qc_user_id', userId);
         }
         ph.identify(userId, {
-            email: userId + '@example.com',
             name: 'Demo Shopper',
             plan: 'free',
             signup_source: 'organic',
