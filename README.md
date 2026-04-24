@@ -12,7 +12,7 @@ Quill & Co is a fake hedgehog-themed coastal lifestyle brand (linen shirts, beac
 
 It exists as a demo prop. A customer watches Claude diagnose 10 real instrumentation bugs in this PostHog project using MCP, sees the fix recommendations and doc links, and (ideally) decides they want MCP on their own project.
 
-## The 10 bugs baked in
+## The 9 bugs baked in
 
 | # | Bug | Where |
 |---|---|---|
