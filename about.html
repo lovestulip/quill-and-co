@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Story — Quill & Co</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-hero {
+      background: linear-gradient(135deg, #2A3D2F 0%, #3D5A47 55%, #2A4A38 100%);
+      color: white;
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .about-hero h1 { color: white; font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 1rem; }
+    .about-hero p { opacity: 0.8; max-width: 560px; margin: 0 auto; font-size: 1.05rem; }
+
+    .story-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .story-block {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: start;
+      margin-bottom: 4rem;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .story-block:last-child { border-bottom: none; }
+
+    .story-block.flip { grid-template-columns: 2fr 1fr; }
+    .story-block.flip .story-img { order: 2; }
+    .story-block.flip .story-text { order: 1; }
+
+    .story-year {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--coral);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .story-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .story-text h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .story-text p {
+      color: var(--text-muted);
+      line-height: 1.85;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .story-img {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--cream);
+      border: 1px solid var(--border);
+    }
+
+    .story-img img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .story-img .img-placeholder {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 3.5rem;
+      gap: 0.25rem;
+    }
+
+    .spike-profile {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.5rem;
+      text-align: center;
+      max-width: 400px;
+      margin: 0 auto 4rem;
+    }
+
+    .spike-avatar {
+      font-size: 5rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .spike-profile h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .spike-profile .title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--coral);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .spike-profile p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .value-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+    }
+
+    .value-card .icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+    .value-card h4 { font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .value-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+    .pull-quote {
+      background: linear-gradient(135deg, #FDE8A0 0%, #F8C860 100%);
+      border-radius: 8px;
+      padding: 2.5rem;
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .pull-quote p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--olive);
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+
+    .pull-quote cite {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 640px) {
+      .story-block, .story-block.flip {
+        grid-template-columns: 1fr;
+      }
+      .story-block.flip .story-img { order: 0; }
+      .story-block.flip .story-text { order: 0; }
+      .values-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announce-bar">Free shipping on orders over $75 &nbsp;·&nbsp; Hedgehog-approved since 2019 🦔</div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Quill & Co</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="products.html">Collections</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-cart" title="Cart">🛒</div>
+  </nav>
+
+  <div class="about-hero">
+    <p style="font-size:4rem; margin-bottom:1rem;">🦔🌺</p>
+    <h1>The Spike Manifesto</h1>
+    <p>A hedgehog. A dream. An unreasonable amount of pineapple pizza.</p>
+  </div>
+
+  <div class="story-section">
+
+    <!-- Origin -->
+    <div class="story-block">
+      <div class="story-img">
+        <div class="img-placeholder" style="background: linear-gradient(135deg, #A8D0E8, #70B0D0);">
+          <span>🌊</span>
+          <span style="font-size:1.5rem;">🦔</span>
+        </div>
+      </div>
+      <div class="story-text">
+        <div class="story-year">2017</div>
+        <div class="story-label">The Escape</div>
+        <h2>Spike quits his job in a parking lot</h2>
+        <p>Spike had a perfectly fine life in suburban Ohio. A small burrow. A steady job in middle management at a nut storage facility. A commute he described as "fine, I guess."</p>
+        <p>Then one Tuesday he watched a documentary about Hawaii and didn't stop thinking about it for six months. On a Thursday in March, he put in his notice, packed a single canvas tote, and bought a one-way ticket to Maui. His coworkers gave him a card. He did not read it until he was already on the plane.</p>
+      </div>
+    </div>
+
+    <!-- Pizza discovery -->
+    <div class="story-block flip">
+      <div class="story-text">
+        <div class="story-year">2017</div>
+        <div class="story-label">The Revelation</div>
+        <h2>A hedgehog discovers pineapple pizza and loses his mind</h2>
+        <p>On his third night in Maui, Spike ordered a Hawaiian pizza by accident (he was trying to order a plain cheese, but the laminated menu was confusing and he has small hands). It changed everything.</p>
+        <p>He ate the whole thing on the beach at sunset. The pineapple. The salt air. The fact that nobody in Ohio had let him live like this. He ordered another one. He has eaten pineapple pizza at least four times a week ever since. He has no regrets. He will not be debating this.</p>
+      </div>
+      <div class="story-img">
+        <img src="product-5.png" alt="Spike's Hawaiian art print">
+      </div>
+    </div>
+
+    <!-- Pull quote -->
+    <div class="pull-quote">
+      <p>"I just thought — if I love linen shirts and pineapple pizza this much, other hedgehogs probably do too. Or humans. Whoever."</p>
+      <cite>— Spike, Founder & Chief Hedgehog Officer</cite>
+    </div>
+
+    <!-- The shop -->
+    <div class="story-block">
+      <div class="story-img">
+        <div class="img-placeholder" style="background: linear-gradient(135deg, #F0D5A8, #E8B280);">
+          <span>🛖</span>
+          <span style="font-size:1.5rem;">🦔</span>
+        </div>
+      </div>
+      <div class="story-text">
+        <div class="story-year">2019</div>
+        <div class="story-label">The Business</div>
+        <h2>Quill & Co opens, sort of</h2>
+        <p>After two years of living on the beach, wearing linen, and thinking about it, Spike started making things. First a shirt with a hedgehog print. Then a tote. Then the hat. He sold them at a farmer's market in Kihei out of a wagon.</p>
+        <p>He had no website, no brand strategy, and no business plan. He did have extremely strong opinions about fabric weight and a surprisingly good eye for colour. People kept buying the shirt. He kept making it. Eventually someone said "you should put this online" and he did, and here we are.</p>
+      </div>
+    </div>
+
+    <!-- Today -->
+    <div class="story-block flip">
+      <div class="story-text">
+        <div class="story-year">Now</div>
+        <div class="story-label">The Vibe</div>
+        <h2>Still on the beach. Still eating pizza.</h2>
+        <p>Quill & Co ships hedgehog-lifestyle goods to people all over the world. Spike still personally approves every product. He tests each linen shirt by wearing it to the beach and seeing if he feels good. He has not once felt bad.</p>
+        <p>The pineapple pizza print is the best-selling product. Spike is not surprised. Spike is never surprised anymore. He has found his peace.</p>
+      </div>
+      <div class="story-img">
+        <div class="img-placeholder" style="background: linear-gradient(135deg, #FDE8A0, #F8C860);">
+          <span>🌅</span>
+          <span style="font-size:1.5rem;">🦔🍕</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spike profile card -->
+    <div class="spike-profile">
+      <span class="spike-avatar">🦔</span>
+      <h3>Spike</h3>
+      <p class="title">Founder & Chief Hedgehog Officer</p>
+      <p>Former middle manager. Full-time beach dweller. Eats pineapple pizza without explanation or apology. Based in Maui. Replies to emails slowly because he is usually at the beach.</p>
+    </div>
+
+    <!-- Values -->
+    <h2 style="text-align:center; margin-bottom:0.5rem;">What we actually believe</h2>
+    <p style="text-align:center; color:var(--text-muted); font-size:0.9rem; margin-bottom:0;">In case you were wondering.</p>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="icon">🍍</div>
+        <h4>Pineapple belongs on pizza</h4>
+        <p>This is not up for debate. Spike has eaten hundreds of them. The science is settled.</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">🌿</div>
+        <h4>Linen over everything</h4>
+        <p>Wrinkles are a feature. If you iron your linen shirt you are doing it wrong.</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">🦔</div>
+        <h4>Hedgehogs deserve nice things</h4>
+        <p>Too long has the hedgehog been overlooked as a lifestyle icon. That era is over.</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">🌊</div>
+        <h4>The beach fixes most things</h4>
+        <p>Not all things. But most things. Spike has done extensive personal research on this.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <section style="background: var(--olive); padding: 4rem 2rem; text-align: center; color: white;">
+    <p style="font-size:3rem; margin-bottom:1rem;">🦔🌺</p>
+    <h2 style="color:white; font-size:1.8rem; margin-bottom:0.75rem;">Shop like Spike</h2>
+    <p style="opacity:0.75; margin-bottom:2rem; max-width:400px; margin-left:auto; margin-right:auto;">Linen shirts. A great tote. Pineapple pizza art for your wall. Everything a hedgehog needs.</p>
+    <a href="products.html" class="btn btn-white">Shop the Collection</a>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Quill & Co 🦔</span>
+        <p>Premium hedgehog-lifestyle goods for the coastal enthusiast. Est. 2019, somewhere near the water.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="products.html">Apparel</a></li>
+          <li><a href="products.html">Accessories</a></li>
+          <li><a href="products.html">Art Prints</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Quill & Co. All rights reserved. Hedgehogs not included.</span>
+      <a class="reset-link" onclick="resetDemo()">Reset demo</a>
+    </div>
+  </footer>
+
+  <script src="posthog-init.js"></script>
+</body>
+</html>
