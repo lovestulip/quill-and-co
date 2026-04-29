@@ -174,10 +174,10 @@
       product_category: product.category,
     });
 
-    // BUG 5: feature flag checked via remote eval in a loop —
-    // reloadFeatureFlags() makes a network call to PostHog on every tick.
-    // At 3-second intervals this is ~1,200 /decide calls per hour per user.
-    // The fix is posthog.onFeatureFlags() once, then isFeatureEnabled() from local cache.
+    // BUG 5: reloadFeatureFlags() called in a loop — this hits PostHog's /decide
+    // endpoint every 3 seconds, generating ~1,200 extra API calls per hour per user.
+    // PostHog JS already fetches and caches flags on init. The fix is to use
+    // posthog.onFeatureFlags(callback) once, then read from the local cache.
     setInterval(function() {
       posthog.reloadFeatureFlags(function() {
         var enabled = posthog.isFeatureEnabled('summer-discount');
